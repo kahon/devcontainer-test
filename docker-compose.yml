@@ -4,21 +4,33 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     volumes:
-      - ./src:/var/www/html
+      - ./src/web:/var/www/html
     networks:
-      - laravel
+      - nutrilink
 
   web:
     image: nginx:alpine
     ports:
       - "8081:80"
     volumes:
-      - ./src:/var/www/html
+      - ./src/web:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+      - analysis
     networks:
-      - laravel
+      - nutrilink
+
+  analysis:
+    build:
+      context: .
+      dockerfile: docker/python/Dockerfile
+    volumes:
+      - ./src/analysis:/app
+    ports:
+      - "8001:8000"
+    networks:
+      - nutrilink
 
   db:
     image: mysql:8.0
@@ -32,17 +44,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - laravel
+      - nutrilink
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
     networks:
-      - laravel
+      - nutrilink
 
 networks:
-  laravel:
+  nutrilink:
 
 volumes:
   db_data:
