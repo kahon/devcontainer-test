@@ -1,0 +1,18 @@
+# 機密情報
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# FastAPI関連
+alembic.ini
+database.ini
+
+# その他
+*.log
+__pycache__/
+.venv/
+node_modules/
