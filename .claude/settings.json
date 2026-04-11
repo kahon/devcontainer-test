@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(//Users/matsumoto/Develop/nutrilink/**)",
+      "Edit(//Users/matsumoto/Develop/nutrilink**)"
+    ]
+  }
+}
