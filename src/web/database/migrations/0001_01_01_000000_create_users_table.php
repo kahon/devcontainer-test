@@ -11,14 +11,49 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('code')->unique();
+            $table->integer('sort_order');
+        });
+
+        Schema::create('job_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('code')->unique();
+            $table->integer('sort_order');
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('employee_number')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->timestamp('password_set_at')->nullable();
+            $table->foreignId('job_type_id');
+            $table->foreignId('role_id');
+            $table->tinyInteger('is_active')->default(true);
+            $table->timestamp('last_sign_in_at')->nullable();
+            $table->foreignId('deactivated_by')->nullable();
+            $table->timestamp('deactivated_at')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->string('full_name');
+            $table->string('full_name_kana');
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -42,8 +77,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('job_types');
+        Schema::dropIfExists('roles');
     }
 };
