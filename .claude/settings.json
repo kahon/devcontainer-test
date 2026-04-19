@@ -1,8 +1,12 @@
 {
   "permissions": {
+    "allow": [
+      "Read(/Users/matsumoto/Develop/nutrilink/**)",
+      "Edit(/Users/matsumoto/Develop/nutrilink/**)"
+    ],
     "deny": [
-      "Read(//Users/matsumoto/Develop/nutrilink/**)",
-      "Edit(//Users/matsumoto/Develop/nutrilink**)"
+      "Read(**)",
+      "Edit(**)"
     ]
   }
 }
