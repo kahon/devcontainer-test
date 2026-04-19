@@ -17,10 +17,9 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    environment: Testing
     strategy:
       matrix:
-        php-version: ['8.4', '8.5']
+        php-version: ['8.3', '8.4', '8.5']
 
     steps:
       - name: Checkout code
@@ -34,15 +33,12 @@ jobs:
           coverage: xdebug
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
       - name: Install Node Dependencies
         run: npm i
-
-      - name: Add Flux Credentials Loaded From ENV
-        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -56,5 +52,5 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Run Tests
-        run: ./vendor/bin/phpunit
+      - name: Tests
+        run: ./vendor/bin/pest

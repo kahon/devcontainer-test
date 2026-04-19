@@ -1,21 +1,24 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Inertia\Testing\AssertableInertia as Assert;
 
-class PasswordConfirmationTest extends TestCase
-{
-    use RefreshDatabase;
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function test_confirm_password_screen_can_be_rendered(): void
-    {
-        $user = User::factory()->create();
+test('confirm password screen can be rendered', function () {
+    $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('password.confirm'));
+    $response = $this->actingAs($user)->get(route('password.confirm'));
 
-        $response->assertOk();
-    }
-}
+    $response->assertOk();
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('auth/ConfirmPassword'),
+    );
+});
+
+test('password confirmation requires authentication', function () {
+    $response = $this->get(route('password.confirm'));
+
+    $response->assertRedirect(route('login'));
+});
