@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreignId('meal_texture_id')->constrained();
             $table->json('food_restrictions')->nullable();
             $table->json('supplements')->nullable();
-            $table->boolean('enteral_nutrition');
+            $table->boolean('is_enteral_nutrition')->default(false);
             $table->text('enteral_nutrition_detail')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamp('created_at');
@@ -37,8 +37,8 @@ return new class extends Migration
         Schema::create('patient_measurements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('admission_id')->constrained();
-            $table->decimal('height', 5, 1)->nullable();
-            $table->decimal('weight', 5, 1)->nullable();
+            $table->decimal('height', 5, 2)->nullable();
+            $table->decimal('weight', 5, 2)->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamp('created_at');
         });

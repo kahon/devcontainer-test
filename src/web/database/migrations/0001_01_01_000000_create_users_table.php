@@ -36,7 +36,7 @@ return new class extends Migration
             $table->timestamp('password_set_at')->nullable();
             $table->foreignId('job_type_id');
             $table->foreignId('role_id');
-            $table->tinyInteger('is_active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->timestamp('last_sign_in_at')->nullable();
             $table->foreignId('deactivated_by')->nullable();
             $table->timestamp('deactivated_at')->nullable();
